@@ -2,11 +2,11 @@ package homework.homework2;
 
 public class ArrayUtil {
     public static void main(String[] args) {
-        int[] array = {2, 5, 8, 10, 32, 22, 11, 66, 12, 30};
+        int[] array = {2, 5, 8, 10, 32, 22, 11, 66, 12, 30, 88, 1};
         int max_digit = array[0];
         int min_digit = array[0];
         System.out.println("All array elements");
-        for (int i = 0; i < array.length - 1; i++) {
+        for (int i = 0; i < array.length; i++) {
             if (array[i] > max_digit) {
                 max_digit = array[i];
             }
