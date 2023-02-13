@@ -1,15 +1,20 @@
 package homework.employee;
 
+import java.util.Scanner;
+
 public class EmployeeDemo {
 
     public static void main(String[] args) {
         EmployeeStorage employeeStorage = new EmployeeStorage();
+        Scanner console = new Scanner(System.in);
         boolean addEmployees = true;
 
         employeeStorage.unitTestEmployee();
 
         while (addEmployees) {
-            String command = employeeStorage.startCommands();
+            employeeStorage.startCommands();
+            String command = console.nextLine();
+
             switch (command) {
                 case "0":
                     addEmployees = false;
@@ -25,6 +30,21 @@ public class EmployeeDemo {
                     break;
                 case "4":
                     System.out.println(employeeStorage.searchEmployeeByCompanyName());
+                    break;
+                case "5":
+                    employeeStorage.searchEmployeeBySalaryRange();
+                    break;
+                case "6":
+                    employeeStorage.changeEmployeePositionById();
+                    break;
+                case "7":
+                    employeeStorage.activeEmployee();
+                    break;
+                case "8":
+                    employeeStorage.inactiveEmployeeById();
+                    break;
+                case "9":
+                    employeeStorage.activeEmployeeById();
                     break;
                 default:
                     System.out.println("Please enter the trust command!");

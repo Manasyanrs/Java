@@ -17,16 +17,18 @@ public class EmployeeStorage {
         addEmployee(user2);
     }
 
-    public String startCommands() {
+    public void startCommands() {
         System.out.print("\nPress 0 for exit.\n" +
-                "Press 1 add employee.\n" +
-                "Press 2 print all employees.\n" +
-                "Press 3 search employee by employee ID.\n" +
-                "Press 4 search employee by company name.\n" +
+                "Please input 1 add employee.\n" +
+                "Please input 2 print all employees.\n" +
+                "Please input 3 search employee by employee ID.\n" +
+                "Please input 4 search employee by company name.\n" +
+                "Please input 5 for search employee by salary range.\n" +
+                "Please input 6 for change employee position by id.\n" +
+                "Please input 7 for print only active employees.\n" +
+                "Please input 8 for inactive employee by id.\n" +
+                "Please input 9 for activate employee by id.\n" +
                 "Make a choice: ");
-        String command = console.nextLine();
-        System.out.println();
-        return command;
     }
 
     private void addEmployee(Employee value) {
@@ -79,9 +81,7 @@ public class EmployeeStorage {
 
     private void extend() {
         Employee[] newEmployees = new Employee[employees.length + 10];
-        for (int i = 0; i < employees.length; i++) {
-            newEmployees[i] = employees[i];
-        }
+        System.arraycopy(employees, 0, newEmployees, 0, employees.length);
         employees = newEmployees;
     }
 
@@ -122,5 +122,61 @@ public class EmployeeStorage {
         }
         System.out.print("Company by name " + searchEmployeeByCompanyName + " was not found. ");
         return null;
+    }
+
+    public void searchEmployeeBySalaryRange() {
+        boolean isFound = true;
+        System.out.print("Please input minimum salary ");
+        double minimumSalary = console.nextDouble();
+        System.out.print("Please input maximum salary ");
+        double maximumSalary = console.nextDouble();
+        for (Employee employee : employees) {
+            if (employee.getSalary() <= minimumSalary || employee.getSalary() <= maximumSalary) {
+                System.out.println(employee);
+                isFound = false;
+            }
+        }
+        if (isFound) {
+            System.out.println("The range from " + minimumSalary + " to "
+                    + maximumSalary + " employee(s) were not found.");
+        }
+    }
+
+    public void changeEmployeePositionById() {
+        Employee foundEmployee = searchEmployeeByEmployeeID();
+        if (foundEmployee != null) {
+            System.out.print("Please enter the employee position : ");
+            String employeePosition = console.nextLine();
+            foundEmployee.setPosition(employeePosition);
+        }
+    }
+
+    public void activeEmployee() {
+        boolean isActiveEmployee = true;
+        for (Employee employee : employees) {
+            if (employee.isActive()) {
+                isActiveEmployee = false;
+                System.out.println(employee);
+            }
+        }
+        if (isActiveEmployee) {
+            System.out.println("Active employees were not found.");
+        }
+    }
+
+    public void inactiveEmployeeById() {
+        Employee inactiveEmployeeById = searchEmployeeByEmployeeID();
+        if (inactiveEmployeeById != null) {
+            inactiveEmployeeById.setActive(false);
+            System.out.println("Employee by " + inactiveEmployeeById.getEmployeeID() + " id change active to false.");
+        }
+    }
+
+    public void activeEmployeeById() {
+        Employee inactiveEmployeeById = searchEmployeeByEmployeeID();
+        if (inactiveEmployeeById != null) {
+            inactiveEmployeeById.setActive(true);
+            System.out.println("Employee by " + inactiveEmployeeById.getEmployeeID() + " id change active to true.");
+        }
     }
 }

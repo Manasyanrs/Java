@@ -2,11 +2,6 @@ package homework.employee;
 
 import java.util.Objects;
 
-//        Դաշտերը դնում եք private, սարքում եք երկու կոնստրուկտոր,
-//        մեկը դատարկ, մյուսը բոլոր տվյանելը ընդունող,
-//          բոլորի համար  get/set մեթոդները, hashCode, equals, toString ն
-//          էլ օվերրայդ կանեք, կարող եք օգտագործել generate-ը։
-//        DynamicArray-ի նման սարքում եք EmployeeStorage ու նույն փեքիջում։
 
 public class Employee {
     private String name;
@@ -15,6 +10,8 @@ public class Employee {
     private double salary;
     private String company;
     private String position;
+    boolean active = true;
+
 
 
     Employee() {
@@ -28,10 +25,19 @@ public class Employee {
         this.salary = salary;
         this.company = company;
         this.position = position;
+
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setName(String name) {
@@ -78,7 +84,7 @@ public class Employee {
         this.position = position;
     }
 
-    @Override
+
     public String toString() {
         return "Employee{" +
                 "name='" + name + '\'' +
@@ -87,6 +93,7 @@ public class Employee {
                 ", salary=" + salary +
                 ", company='" + company + '\'' +
                 ", position='" + position + '\'' +
+                ", active='" + active + '\'' +
                 '}';
     }
 
@@ -95,11 +102,17 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return Double.compare(employee.salary, salary) == 0 && Objects.equals(name, employee.name) && Objects.equals(surName, employee.surName) && Objects.equals(employeeID, employee.employeeID) && Objects.equals(company, employee.company) && Objects.equals(position, employee.position);
+        return Double.compare(employee.salary, salary) == 0 &&
+                Objects.equals(name, employee.name) &&
+                Objects.equals(surName, employee.surName) &&
+                Objects.equals(employeeID, employee.employeeID) &&
+                Objects.equals(company, employee.company) &&
+                Objects.equals(position, employee.position) &&
+                Objects.equals(active, employee.active);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surName, employeeID, salary, company, position);
+        return Objects.hash(name, surName, employeeID, salary, company, position, active);
     }
 }
