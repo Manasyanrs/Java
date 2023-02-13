@@ -13,7 +13,6 @@ public class Employee {
     boolean active = true;
 
 
-
     Employee() {
 
     }

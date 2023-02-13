@@ -5,9 +5,10 @@ import java.util.Scanner;
 public class EmployeeDemo {
 
     public static void main(String[] args) {
+        boolean addEmployees = true;
+
         EmployeeStorage employeeStorage = new EmployeeStorage();
         Scanner console = new Scanner(System.in);
-        boolean addEmployees = true;
 
         employeeStorage.unitTestEmployee();
 

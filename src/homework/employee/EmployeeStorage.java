@@ -126,10 +126,13 @@ public class EmployeeStorage {
 
     public void searchEmployeeBySalaryRange() {
         boolean isFound = true;
+
         System.out.print("Please input minimum salary ");
         double minimumSalary = console.nextDouble();
+
         System.out.print("Please input maximum salary ");
         double maximumSalary = console.nextDouble();
+
         for (Employee employee : employees) {
             if (employee.getSalary() <= minimumSalary || employee.getSalary() <= maximumSalary) {
                 System.out.println(employee);
