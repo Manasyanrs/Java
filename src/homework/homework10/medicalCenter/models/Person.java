@@ -1,12 +1,12 @@
 package homework.homework10.medicalCenter.models;
 
 public abstract class Person {
-    private String id;
+    private final String id;
     private String name;
     private String surname;
     private String phoneNumber;
 
-    Person(String id, String name, String surname, String phoneNumber){
+    Person(String id, String name, String surname, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -35,6 +35,6 @@ public abstract class Person {
 
     @Override
     public String toString() {
-        return "id= " + id +  ", name= " + name +  ", surname= " + surname +  ", phoneNumber= " + phoneNumber + " ";
+        return "id= " + id + ", name= " + name + ", surname= " + surname + ", phoneNumber= " + phoneNumber + " ";
     }
 }

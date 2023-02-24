@@ -6,9 +6,9 @@ import static homework.homework10.medicalCenter.DateUtil.DateUtils.dateToString;
 import static homework.homework10.medicalCenter.DateUtil.DateUtils.timeToString;
 
 public class Patient extends Person {
-    private Doctor doctor;
-    private Date registerDate;
-    private Date registerTime;
+    private final Doctor doctor;
+    private final Date registerDate;
+    private final Date registerTime;
 
     public Patient(String id, String name, String surname, String phoneNumber, Doctor doctor, Date registerDate, Date registerTime) {
         super(id, name, surname, phoneNumber);
@@ -27,9 +27,8 @@ public class Patient extends Person {
 
     @Override
     public String toString() {
-        return super.toString() + doctor +
+        return "Patient {" + super.toString() + doctor +
                 ", registerDate= " + dateToString(registerDate) +
-                ", registerTime= " + timeToString(registerTime);
+                ", registerTime= " + timeToString(registerTime) + '}';
     }
-
 }

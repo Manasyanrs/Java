@@ -1,14 +1,10 @@
 package homework.homework10.medicalCenter.commands;
 
-import homework.homework10.medicalCenter.MedicalCenter;
+import java.util.Scanner;
 
-public interface Commands extends DoctorCommands {
+public interface CommandsHandler extends DoctorCommands, PatientsCommands {
 
-    private static void isRun() {
-        MedicalCenter.isRun = false;
-    }
-
-    static void printCommands() {
+    default boolean printCommands(Scanner scanner) {
         System.out.print("\nPress 0 to exit: \n" +
                 "Press 1 to add doctor: \n" +
                 "Press 2 to search doctor by profession: \n" +
@@ -19,37 +15,37 @@ public interface Commands extends DoctorCommands {
                 "Press 7 to print todays patients: \n" +
                 "Make a choice: ");
 
-        String command = DoctorCommands.scanner.nextLine();
+        String command = scanner.nextLine();
         commandsHandler(command);
+
+        return !command.equals("0");
     }
 
-    private static void commandsHandler(String command) {
+    private void commandsHandler(String command) {
         switch (command) {
             case "0":
-                isRun();
                 break;
             case "1":
-                DoctorCommands.addDoctor();
+                addDoctor();
                 break;
             case "2":
-                DoctorCommands.searchPersonByProfession();
+                searchPersonByProfession();
                 break;
             case "3":
-                DoctorCommands.deletePersonById();
+                deleteDoctorById();
                 break;
             case "4":
-                DoctorCommands.changePersonDate();
+                changePersonDate();
                 break;
             case "5":
-                PatientsCommands.addPatient();
+                addPatient();
                 break;
             case "6":
-                DoctorCommands.printAllDoctorsPatients();
+                printAllDoctorsPatients();
                 break;
             case "7":
-                PatientsCommands.toDaysPatients();
+                toDaysPatients();
                 break;
-
             default:
                 System.out.println("Please enter the trust command!");
         }
