@@ -118,7 +118,8 @@ public class CommandsHandler {
         System.out.print("Please enter the position: ");
         String position = scanner.nextLine();
 
-        Employee employee = new Employee(name, surName, employeeID, parseDouble(salary), company, position, new Date(), birthDate);
+        Employee employee = new Employee(name, surName, employeeID, parseDouble(salary),
+                company, position, new Date(), birthDate);
         employeeStorage.addEmployee(employee);
         System.out.println("\nUser created and add to data base.");
     }

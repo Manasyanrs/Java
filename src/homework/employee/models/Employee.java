@@ -18,7 +18,8 @@ public class Employee {
     private Date dateOfBirthday;
 
 
-    public Employee(String name, String surName, String employeeID, double salary, String company, String position, Date registerDate, Date dateOfBirthday) {
+    public Employee(String name, String surName, String employeeID, double salary,
+                    String company, String position, Date registerDate, Date dateOfBirthday) {
         this.name = name;
         this.surName = surName;
         this.employeeID = employeeID;
