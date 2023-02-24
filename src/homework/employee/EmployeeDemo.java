@@ -34,6 +34,4 @@ public class EmployeeDemo {
                 "Please input 9 for activate employee by id.\n" +
                 "Make a choice: ");
     }
-
 }
-
