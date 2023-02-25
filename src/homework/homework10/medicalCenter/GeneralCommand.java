@@ -283,39 +283,32 @@ public class GeneralCommand implements CommandsHandler {
     //DB commands
     public void toDaysPatients() {
         for (int i = 0; i < personDB.getSize(); i++) {
-            try {
+            if (personDB.getPersonDataBase()[i] instanceof Patient){
                 Patient patient = (Patient) personDB.getPersonDataBase()[i];
 
                 if (patient.getRegisterDate().getDate() == new Date().getDate()) {
                     System.out.println(personDB.getPersonDataBase()[i]);
                 }
-            } catch (ClassCastException e) {
             }
         }
     }
 
     private void printAllDoctors() {
         for (int i = 0; i < personDB.getSize(); i++) {
-            try {
-                Doctor doctor = (Doctor) personDB.getPersonDataBase()[i];
-                System.out.println(doctor.toString());
-            } catch (ClassCastException e) {
-
+            if (personDB.getPersonDataBase()[i] instanceof Doctor){
+                System.out.println(personDB.getPersonDataBase()[i]);
             }
         }
     }
 
     private Person searchPersonByProfession(String personProfession) {
         for (int i = 0; i < personDB.getSize(); i++) {
-            try {
+            if (personDB.getPersonDataBase()[i] instanceof Doctor){
                 Doctor doctor = (Doctor) personDB.getPersonDataBase()[i];
                 if (doctor.getProfession().equals(personProfession)) {
                     return personDB.getPersonDataBase()[i];
                 }
-            } catch (ClassCastException e) {
-
             }
-
         }
         System.out.print("Person by id " + personProfession + " was not found. ");
         return null;
@@ -341,14 +334,12 @@ public class GeneralCommand implements CommandsHandler {
 
     private Doctor searchPersonByName(String personName) {
         for (int i = 0; i < personDB.getSize(); i++) {
-            try {
+            if (personDB.getPersonDataBase()[i] instanceof Doctor){
                 Doctor doctor = (Doctor) personDB.getPersonDataBase()[i];
                 if (doctor.getName().equals(personName)) {
                     return doctor;
                 }
-            } catch (ClassCastException e) {
             }
-
         }
         System.out.print("Person by name։ " + personName + " was not found. ");
         return null;
