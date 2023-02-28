@@ -1,6 +1,6 @@
-package homework.homework10.medicalCenter;
+package homework.homework10.medicalCenter.commands;
 
-import homework.homework10.medicalCenter.commands.CommandsHandler;
+import homework.homework10.medicalCenter.Profession;
 import homework.homework10.medicalCenter.dataBase.PersonDataBase;
 import homework.homework10.medicalCenter.models.Doctor;
 import homework.homework10.medicalCenter.models.Patient;
@@ -13,8 +13,8 @@ import static homework.homework10.medicalCenter.DateUtil.DateUtils.parseToDate;
 import static homework.homework10.medicalCenter.DateUtil.DateUtils.parseToTime;
 
 public class GeneralCommand implements CommandsHandler {
+    PersonDataBase person = new PersonDataBase();
     Scanner scanner = new Scanner(System.in);
-    PersonDataBase personDB = new PersonDataBase();
 
     public void addDoctor() {
         String createDoctorId = getPersonId();
@@ -28,33 +28,51 @@ public class GeneralCommand implements CommandsHandler {
         System.out.print("Please enter the doctor phone number: ");
         String phoneNumber = scanner.nextLine();
 
-        System.out.print("Please enter the doctor profession: ");
-        String doctorProfession = scanner.nextLine();
+        Profession profession = doctorProfession();
 
         System.out.print("Please enter the doctors email: ");
         String email = scanner.nextLine();
 
-        Doctor doctor = new Doctor(createDoctorId, name, surName, phoneNumber, doctorProfession, email);
-        personDB.addPerson(doctor);
+        person.addPerson(new Doctor(createDoctorId, name, surName, phoneNumber, profession, email));
+        System.out.println("Doctor is created.");
+
+    }
+
+    private Profession doctorProfession() {
+        System.out.println("Please choose the doctor profession: ");
+        Profession[] values = Profession.values();
+        for (Profession value : values) {
+            System.out.println(value.ordinal() + 1 + ": " + value.name());
+        }
+        String scanner = this.scanner.nextLine();
+        for (Profession value : values) {
+            if (scanner.toUpperCase().equals(value.name()) || "1".equals(scanner) ||
+                    "2".equals(scanner) || "3".equals(scanner) || "4".equals(scanner)) {
+                return Profession.valueOf(value.name());
+            }
+        }
+        System.out.println("Please input correct value of doctors profession. ");
+        doctorProfession();
+        return null;
     }
 
     public void searchPersonByProfession() {
         System.out.print("Please enter the doctor profession: ");
         String profession = scanner.nextLine();
-        System.out.println(searchPersonByProfession(profession));
+        System.out.println(person.searchPersonByProfession(profession));
     }
 
     public void deleteDoctorById() {
-        if (personDB.isEmptyDataBase()) {
-            printAllDoctors();
+        if (person.isEmptyDataBase()) {
+            person.printAllDoctors();
             System.out.print("Please enter the doctor id for delete: ");
             String doctorId = scanner.nextLine();
             Doctor doctor = getDoctorById(doctorId);
             if (doctor != null) {
                 for (int i = 0; i < doctor.getPatientsSize(); i++) {
-                    personDB.deletePersonById(doctor.getPatientsId()[i]);
+                    person.deletePersonById(doctor.getPatientsId()[i]);
                 }
-                personDB.deletePersonById(doctorId);
+                person.deletePersonById(doctorId);
             }
         } else {
             System.out.println("Data base is empty. ");
@@ -63,8 +81,8 @@ public class GeneralCommand implements CommandsHandler {
     }
 
     public void printAllDoctorsPatients() {
-        if (personDB.isEmptyDataBase()) {
-            printAllDoctors();
+        if (person.isEmptyDataBase()) {
+            person.printAllDoctors();
             System.out.print("Please enter a doctor ID to view patients: ");
             String doctorId = scanner.nextLine();
             Doctor doctor = getDoctorById(doctorId);
@@ -77,11 +95,11 @@ public class GeneralCommand implements CommandsHandler {
     }
 
     public void changePersonDate() {
-        if (personDB.isEmptyDataBase()) {
-            printAllDoctors();
+        if (person.isEmptyDataBase()) {
+            person.printAllDoctors();
             System.out.print("Please enter person id by change date: ");
             String changePersonId = scanner.nextLine();
-            if (changePersonDateInDataBaseById(changePersonId)) {
+            if (person.changePersonDateInDataBaseById(changePersonId)) {
                 utilsChangePersonDate(changePersonId);
             } else {
                 System.out.println("Try again:");
@@ -113,7 +131,7 @@ public class GeneralCommand implements CommandsHandler {
 
     private Doctor getDoctorById(String personId) {
         try {
-            Person doctor = personDB.getPerson(personId);
+            Person doctor = person.getPerson(personId);
             return (Doctor) doctor;
         } catch (NullPointerException e) {
             System.out.println("Doctor by id: " + personId + " not found.");
@@ -156,23 +174,24 @@ public class GeneralCommand implements CommandsHandler {
     private void doctorPatients(Doctor doctor) {
         if (doctor.getPatientsSize() != 0) {
             for (int i = 0; i < doctor.getPatientsSize(); i++) {
-                System.out.println(personDB.getPerson(doctor.getPatientsId()[i]));
+                System.out.println(person.getPerson(doctor.getPatientsId()[i]));
             }
         } else {
             System.out.println("This doctor das not have patients");
         }
     }
 
-    private boolean patientsTime(Doctor person, Date time, int date) {
+    private boolean patientsTime(Doctor doctor, Date time, int date) {
         boolean isFreeTime = true;
         String registerPatientsTime = "";
-        for (int i = 0; i < person.getPatientsSize(); i++) {
-            Patient patient = (Patient) personDB.getPerson(person.getPatientsId()[i]);
+
+        for (int i = 0; i < doctor.getPatientsSize(); i++) {
+            Patient patient = (Patient) person.getPerson(doctor.getPatientsId()[i]);
+
             Date registerDate = patient.getRegisterDate();
             Date registerTime = patient.getRegisterTime();
 
-            registerPatientsTime += registerTime.getHours() + " : " +
-                    registerTime.getMinutes() + ",";
+            registerPatientsTime += registerTime;
 
             if (date != registerDate.getDate()) {
                 return true;
@@ -184,7 +203,7 @@ public class GeneralCommand implements CommandsHandler {
             }
         }
         if (!isFreeTime) {
-            System.out.println("Patients time to doctor " + person.getName());
+            System.out.println("Patients time to doctor " + doctor.getName());
             for (String patientsTime : registerPatientsTime.split(",")) {
                 System.out.println(patientsTime);
             }
@@ -220,8 +239,13 @@ public class GeneralCommand implements CommandsHandler {
         Date checkTime = checkTime(doctor, checkDate.getDate());
 
         Patient patient = new Patient(createPersonId, name, surName, phoneNumber, doctor, checkDate, checkTime);
-        personDB.addPerson(patient);
+        person.addPerson(patient);
         doctor.setPatientsId(createPersonId);
+    }
+
+    @Override
+    public void toDaysPatients() {
+        person.toDaysPatients();
     }
 
     private Date checkDate() {
@@ -258,11 +282,11 @@ public class GeneralCommand implements CommandsHandler {
     }
 
     private Doctor chooseADoctor() {
-        printAllDoctors();
+        person.printAllDoctors();
 
         System.out.print("Please choose a doctor by name: ");
         String chooseADoctor = scanner.nextLine();
-        Doctor chooseDoctor = searchPersonByName(chooseADoctor);
+        Doctor chooseDoctor = person.searchPersonByName(chooseADoctor);
         if (chooseDoctor == null) {
             System.out.println("Please enter the correct doctor name.");
         }
@@ -272,76 +296,11 @@ public class GeneralCommand implements CommandsHandler {
     private String getPersonId() {
         System.out.print("Please enter the person id: ");
         String personId = scanner.nextLine();
-        if (existsByPersonIdInDataBase(personId)) {
+        if (person.existsByPersonIdInDataBase(personId)) {
             System.out.println("Sorry but this id already exists.");
             getPersonId();
         }
         return personId;
     }
 
-
-    //DB commands
-    public void toDaysPatients() {
-        for (int i = 0; i < personDB.getSize(); i++) {
-            if (personDB.getPersonDataBase()[i] instanceof Patient){
-                Patient patient = (Patient) personDB.getPersonDataBase()[i];
-
-                if (patient.getRegisterDate().getDate() == new Date().getDate()) {
-                    System.out.println(personDB.getPersonDataBase()[i]);
-                }
-            }
-        }
-    }
-
-    private void printAllDoctors() {
-        for (int i = 0; i < personDB.getSize(); i++) {
-            if (personDB.getPersonDataBase()[i] instanceof Doctor){
-                System.out.println(personDB.getPersonDataBase()[i]);
-            }
-        }
-    }
-
-    private Person searchPersonByProfession(String personProfession) {
-        for (int i = 0; i < personDB.getSize(); i++) {
-            if (personDB.getPersonDataBase()[i] instanceof Doctor){
-                Doctor doctor = (Doctor) personDB.getPersonDataBase()[i];
-                if (doctor.getProfession().equals(personProfession)) {
-                    return personDB.getPersonDataBase()[i];
-                }
-            }
-        }
-        System.out.print("Person by id " + personProfession + " was not found. ");
-        return null;
-    }
-
-    private boolean existsByPersonIdInDataBase(String personId) {
-        for (int i = 0; i < personDB.getSize(); i++) {
-            if (personDB.getPersonDataBase()[i].getId().equals(personId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean changePersonDateInDataBaseById(String personId) {
-        for (int i = 0; i < personDB.getSize(); i++) {
-            if (personDB.getPersonDataBase()[i].getId().equals(personId) && personDB.getPersonDataBase()[i] instanceof Doctor) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Doctor searchPersonByName(String personName) {
-        for (int i = 0; i < personDB.getSize(); i++) {
-            if (personDB.getPersonDataBase()[i] instanceof Doctor){
-                Doctor doctor = (Doctor) personDB.getPersonDataBase()[i];
-                if (doctor.getName().equals(personName)) {
-                    return doctor;
-                }
-            }
-        }
-        System.out.print("Person by name։ " + personName + " was not found. ");
-        return null;
-    }
 }

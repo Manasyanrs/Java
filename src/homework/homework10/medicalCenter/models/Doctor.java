@@ -1,13 +1,15 @@
 package homework.homework10.medicalCenter.models;
 
+import homework.homework10.medicalCenter.Profession;
+
 public class Doctor extends Person {
-    private String profession;
+    private Profession profession;
     private String email;
     private final String[] patientsId = new String[1];
     private int patientsSize;
 
 
-    public Doctor(String id, String name, String surname, String phoneNumber, String profession, String email) {
+    public Doctor(String id, String name, String surname, String phoneNumber, Profession profession, String email) {
         super(id, name, surname, phoneNumber);
         this.profession = profession;
         this.email = email;
@@ -25,12 +27,12 @@ public class Doctor extends Person {
         return patientsId;
     }
 
-    public String getProfession() {
+    public Profession getProfession() {
         return profession;
     }
 
     public void setProfession(String profession) {
-        this.profession = profession;
+        this.profession = Profession.valueOf(profession);
     }
 
     public void setEmail(String email) {

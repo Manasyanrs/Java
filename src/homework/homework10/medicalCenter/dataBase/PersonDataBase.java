@@ -1,6 +1,11 @@
 package homework.homework10.medicalCenter.dataBase;
 
+import homework.homework10.medicalCenter.DateUtil.DateUtils;
+import homework.homework10.medicalCenter.models.Doctor;
+import homework.homework10.medicalCenter.models.Patient;
 import homework.homework10.medicalCenter.models.Person;
+
+import java.util.Date;
 
 public class PersonDataBase {
     private Person[] personDataBase = new Person[2];
@@ -39,6 +44,70 @@ public class PersonDataBase {
         return size != 0;
     }
 
+    public void toDaysPatients() {
+        for (int i = 0; i < size; i++) {
+            if (personDataBase[i] instanceof Patient){
+                Patient patient = (Patient) personDataBase[i];
+                Date d = patient.getRegisterDate();
+                if (DateUtils.dateToString(d).equals(DateUtils.dateToString(new Date()))) {
+                    System.out.println(personDataBase[i]);
+                }
+            }
+        }
+    }
+
+    public void printAllDoctors() {
+        for (int i = 0; i < size; i++) {
+            if (personDataBase[i] instanceof Doctor){
+                System.out.println(personDataBase[i]);
+            }
+        }
+    }
+
+    public Person searchPersonByProfession(String personProfession) {
+        for (int i = 0; i < size; i++) {
+            if (personDataBase[i] instanceof Doctor){
+                Doctor doctor = (Doctor) personDataBase[i];
+                if (doctor.getProfession().name().equals(personProfession.toUpperCase())) {
+                    return personDataBase[i];
+                }
+            }
+        }
+        System.out.print("Person by " + personProfession + " was not found. ");
+        return null;
+    }
+
+    public boolean existsByPersonIdInDataBase(String personId) {
+        for (int i = 0; i < size; i++) {
+            if (personDataBase[i].getId().equals(personId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean changePersonDateInDataBaseById(String personId) {
+        for (int i = 0; i < size; i++) {
+            if (personDataBase[i].getId().equals(personId) && personDataBase[i] instanceof Doctor) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Doctor searchPersonByName(String personName) {
+        for (int i = 0; i < size; i++) {
+            if (personDataBase[i] instanceof Doctor){
+                Doctor doctor = (Doctor) personDataBase[i];
+                if (doctor.getName().equals(personName)) {
+                    return doctor;
+                }
+            }
+        }
+        System.out.print("Person by name։ " + personName + " was not found. ");
+        return null;
+    }
+
     private void removePersonByIdInDateBase(int index) {
         Person[] result = new Person[size - 1];
 
@@ -59,11 +128,4 @@ public class PersonDataBase {
         personDataBase = tmpPersonDataBase;
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public Person[] getPersonDataBase() {
-        return personDataBase;
-    }
 }
