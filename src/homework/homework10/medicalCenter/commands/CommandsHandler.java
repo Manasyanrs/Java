@@ -16,6 +16,7 @@ public interface CommandsHandler extends DoctorCommands, PatientsCommands {
                 "Make a choice: ");
 
         String command = scanner.nextLine();
+
         commandsHandler(command);
 
         return !command.equals("0");
