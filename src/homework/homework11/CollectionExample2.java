@@ -13,7 +13,7 @@ public class CollectionExample2 {
         addNames(5);
         printUniqueNamesFromList();
         System.out.println();
-        addNamesInListAndPrintAllSortedNamesFromList(10);
+        addNamesAndPrintSortedList(10);
     }
 
     static void addNames(int enterCountInputNames) {
@@ -30,7 +30,7 @@ public class CollectionExample2 {
         System.out.println(genericNamesList);
     }
 
-    static void addNamesInListAndPrintAllSortedNamesFromList(int enterCountInputNames) {
+    static void addNamesAndPrintSortedList(int enterCountInputNames) {
         List<String> sortedNamesList = new LinkedList<>();
 
         for (int i = 0; i < enterCountInputNames; i++) {

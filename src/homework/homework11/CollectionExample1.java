@@ -36,8 +36,7 @@ public class CollectionExample1 {
         System.out.println("\n" + listNames);
         System.out.print("Which name do you want to delete? ");
         String strName = scanner.nextLine();
-        if (listNames.contains(strName)) {
-            listNames.remove(strName);
+        if (listNames.remove(strName)) {
             System.out.println(listNames);
             System.out.println(strName + " deleted in names list.");
         }else {
