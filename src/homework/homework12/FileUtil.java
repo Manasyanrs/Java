@@ -66,7 +66,7 @@ public class FileUtil {
         });
         for (File file : filerFiles) {
             File strFilePath = new File(file.getAbsolutePath());
-            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(strFilePath.getAbsolutePath()))) {
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(strFilePath))) {
                 String strLine;
                 while ((strLine = bufferedReader.readLine()) != null) {
                     if (strLine.contains(keyword)) {
