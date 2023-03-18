@@ -1,0 +1,2 @@
+copy copy copy .tzt
+i copy this text in new line;
